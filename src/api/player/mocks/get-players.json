@@ -1,0 +1,20 @@
+[
+  {
+    "id": "5777ff29-f6c5-4efb-a23d-a1e8cc2f78ca",
+    "first_name": "John",
+    "last_name": "Doe",
+    "avatar_url": "https://ui-avatars.com/api/John+Doe"
+  },
+  {
+    "id": "b1c49af7-3732-48e4-88aa-997af5ac69de",
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "avatar_url": "https://ui-avatars.com/api/Jane+Smith"
+  },
+  {
+    "id": "e54f7393-015c-4dfd-ac30-80d1badc4982",
+    "first_name": "Alice",
+    "last_name": "Johnson",
+    "avatar_url": "https://ui-avatars.com/api/Alice+Johnson"
+  }
+]
