@@ -1,5 +1,5 @@
 import { client } from "@/supabase/client";
-import { Game, GameCreate, GameUpdate } from "@/api/game/types";
+import { Game, ExtendedGame, GameCreate, GameUpdate } from "@/api/game/types";
 
 export const getAll = async (): Promise<Game[]> => {
   const { data, error } = await client.from("game").select();
@@ -12,6 +12,29 @@ export const getAll = async (): Promise<Game[]> => {
     throw new Error("No games found");
   }
 
+  return data;
+};
+
+export const getExtended = async (): Promise<ExtendedGame[]> => {
+  const { data, error } = await client.from("game").select(`
+      id,
+      datetime,
+      id,
+      player_1 (id, first_name, last_name, avatar_url),
+      player_2 (id, first_name, last_name, avatar_url),
+      score_player_1,
+      score_player_2
+    `);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (!data) {
+    throw new Error("No games found");
+  }
+
+  // @ts-expect-error joined query does not have Player type
   return data;
 };
 
