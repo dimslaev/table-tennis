@@ -1,7 +1,8 @@
 [
   {
     "id": "1d69addd-2cc2-4c4f-aec0-afddc56cff76",
-    "datetime": "2024-01-02 14:30:00",
+    "start_time": "2024-03-29T13:55:35.852Z",
+    "end_time": "2024-03-29T14:55:35.852Z",
     "score_player_1": 3,
     "score_player_2": 2,
     "player_1": "b1c49af7-3732-48e4-88aa-997af5ac69de",
@@ -9,7 +10,8 @@
   },
   {
     "id": "5225bdec-bb2e-440b-8316-5b8161ff8222",
-    "datetime": "2024-01-01 12:00:00",
+    "start_time": "2024-03-28T13:55:35.852Z",
+    "end_time": "2024-03-28T14:55:35.852Z",
     "score_player_1": 2,
     "score_player_2": 1,
     "player_1": "5777ff29-f6c5-4efb-a23d-a1e8cc2f78ca",
@@ -17,7 +19,8 @@
   },
   {
     "id": "c2049e41-053e-465e-8096-1a100cf5a6a9",
-    "datetime": "2024-01-03 16:45:00",
+    "start_time": "2024-03-27T13:55:35.852Z",
+    "end_time": "2024-03-27T14:55:35.852Z",
     "score_player_1": 1,
     "score_player_2": 1,
     "player_1": "e54f7393-015c-4dfd-ac30-80d1badc4982",

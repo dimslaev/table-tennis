@@ -1,6 +1,7 @@
 import { RouteObject } from "react-router-dom";
 import { Root } from "@/routes/root";
 import { CreateGame } from "@/routes/create-game";
+import { CreatePlayer } from "@/routes/create-player";
 
 const routes: RouteObject[] = [
   {
@@ -14,7 +15,7 @@ const routes: RouteObject[] = [
       },
       {
         path: "/create-player",
-        element: "Create player",
+        element: <CreatePlayer />,
       },
       {
         path: "/stats",

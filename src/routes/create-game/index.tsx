@@ -20,19 +20,18 @@ export function CreateGame() {
     },
   });
 
-  const isLoading = !useMinimumFetchTimeElapsed(
-    createGame.isPending || deleteGame.isPending
-  );
+  const createGameIsPending = !useMinimumFetchTimeElapsed(createGame.isPending);
+  const deleteGameIsPending = !useMinimumFetchTimeElapsed(deleteGame.isPending);
 
   return (
     <Flex maxWidth="600px" direction="column" gap="6">
       <Heading>Add score for an existing game</Heading>
-      <Form onSubmit={createGame.mutate} isLoading={isLoading} />
+      <Form onSubmit={createGame.mutate} isLoading={createGameIsPending} />
       <Separator size="4" />
       <List
         games={games.data || []}
         onDeleteGame={deleteGame.mutate}
-        isLoading={isLoading}
+        isLoading={deleteGameIsPending}
       />
     </Flex>
   );

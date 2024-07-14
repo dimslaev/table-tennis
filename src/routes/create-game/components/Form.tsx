@@ -6,7 +6,8 @@ import { GameCreate } from "@/api/game/types";
 import * as z from "zod";
 
 const defaultValues: GameCreate = {
-  datetime: new Date().toISOString(),
+  start_time: new Date().toISOString(),
+  end_time: new Date().toISOString(),
   player_1: "",
   player_2: "",
   score_player_1: 0,
@@ -14,7 +15,8 @@ const defaultValues: GameCreate = {
 };
 
 const schema = z.object({
-  datetime: z.string().min(2, "Please select a date"),
+  start_time: z.string().min(2, "Please select a date"),
+  end_time: z.string().min(2, "Please select a date"),
   player_1: z.string().min(2, "Please select first player"),
   player_2: z.string().min(2, "Please select second player"),
   score_player_1: z.number().min(0, "Please add score"),
@@ -30,7 +32,7 @@ export function Form({
 }) {
   const players = useGetPlayers();
 
-  const [formValues, setGameCreate] = useState<GameCreate>(defaultValues);
+  const [formValues, setFormValues] = useState<GameCreate>(defaultValues);
 
   const [errors, setErrors] = useState<
     Partial<Record<keyof GameCreate, string>>
@@ -38,7 +40,7 @@ export function Form({
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
-    setGameCreate((prevValues) => ({
+    setFormValues((prevValues) => ({
       ...prevValues,
       [name]:
         type === "number" && value
@@ -76,6 +78,7 @@ export function Form({
     e.preventDefault();
     if (validateForm()) {
       onSubmit(formValues);
+      setFormValues(defaultValues);
     } else {
       console.log("Errors:", errors);
     }
@@ -85,11 +88,20 @@ export function Form({
     <form onSubmit={handleSubmit}>
       <Flex direction="column" gap="2">
         <Grid gap="4" columns="2">
-          <FieldWrapper label="Date" error={errors["datetime"]}>
+          <FieldWrapper label="Start timme" error={errors["start_time"]}>
             <TextField.Root
               name="datetime"
               type="datetime-local"
-              value={formValues.datetime.slice(0, 16)}
+              value={formValues.start_time.slice(0, 16)}
+              onChange={handleChange}
+            />
+          </FieldWrapper>
+
+          <FieldWrapper label="End time" error={errors["end_time"]}>
+            <TextField.Root
+              name="datetime"
+              type="datetime-local"
+              value={formValues.end_time.slice(0, 16)}
               onChange={handleChange}
             />
           </FieldWrapper>
@@ -165,7 +177,7 @@ export function Form({
       </Flex>
 
       <Button type="submit" mt="4" loading={isLoading} style={{ width: 120 }}>
-        Submit
+        Create game
       </Button>
     </form>
   );
