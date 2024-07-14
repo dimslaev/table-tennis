@@ -1,11 +1,10 @@
 import { Flex, FlexProps, Text, Tooltip } from "@radix-ui/themes";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 
 type Props = FlexProps & {
   label: string;
   tooltip?: string;
-  error?: FieldError | Merge<FieldErrorsImpl, FieldError> | undefined;
+  error?: string | undefined;
   required?: boolean;
   fullWidth?: boolean;
 };
@@ -44,9 +43,9 @@ export const FieldWrapper = (props: Props) => {
 
       {children}
 
-      {typeof error?.message === "string" && (
+      {error && (
         <Text color="red" size="1">
-          {error.message}
+          {error}
         </Text>
       )}
     </Flex>

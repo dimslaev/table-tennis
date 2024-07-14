@@ -4,7 +4,7 @@ import {
   useMutation,
   UseMutationOptions,
 } from "@tanstack/react-query";
-import { Game, GameCreate, GameUpdate } from "@/api/game/types";
+import { ExtendedGame, Game, GameCreate, GameUpdate } from "@/api/game/types";
 import * as gameService from "@/api/game/service";
 import { QUERY_KEYS } from "@/api/constants";
 
@@ -14,6 +14,16 @@ export const useGetGames = (
   return useQuery<Game[]>({
     queryKey: [QUERY_KEYS.GAMES],
     queryFn: gameService.getAll,
+    ...options,
+  });
+};
+
+export const useGetExtendedGames = (
+  options?: Omit<UseQueryOptions<ExtendedGame[]>, "queryKey" | "queryFn">
+) => {
+  return useQuery<ExtendedGame[]>({
+    queryKey: [QUERY_KEYS.EXTENDED_GAMES],
+    queryFn: gameService.getExtended,
     ...options,
   });
 };
