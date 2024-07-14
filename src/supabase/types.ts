@@ -46,10 +46,24 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "game_player_1_fkey";
+            columns: ["player_1"];
+            isOneToOne: false;
+            referencedRelation: "statistics";
+            referencedColumns: ["id"];
+          },
+          {
             foreignKeyName: "game_player_2_fkey";
             columns: ["player_2"];
             isOneToOne: false;
             referencedRelation: "player";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "game_player_2_fkey";
+            columns: ["player_2"];
+            isOneToOne: false;
+            referencedRelation: "statistics";
             referencedColumns: ["id"];
           }
         ];
@@ -77,7 +91,19 @@ export type Database = {
       };
     };
     Views: {
-      [_ in never]: never;
+      statistics: {
+        Row: {
+          first_name: string | null;
+          games_lost: number | null;
+          games_played: number | null;
+          games_won: number | null;
+          id: string | null;
+          last_name: string | null;
+          ranking: number | null;
+          score: number | null;
+        };
+        Relationships: [];
+      };
     };
     Functions: {
       [_ in never]: never;
