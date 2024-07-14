@@ -5,7 +5,7 @@ import "@/style.css";
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <Theme
-      appearance="dark"
+      appearance="light"
       grayColor="sand"
       panelBackground="solid"
       radius="small"

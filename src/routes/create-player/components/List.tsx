@@ -18,8 +18,7 @@ export function List({
     <Table.Root>
       <Table.Header>
         <Table.Row>
-          <Table.ColumnHeaderCell>First name</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Last name</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>Player</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
@@ -40,8 +39,9 @@ export function List({
           );
           return (
             <Table.Row key={player.id} align="center">
-              <Table.Cell>{player.first_name} </Table.Cell>
-              <Table.Cell>{player.last_name}</Table.Cell>
+              <Table.Cell>
+                {player.first_name} {player.last_name}
+              </Table.Cell>
               <Table.Cell align="right">
                 {playerHasExistingGames ? (
                   <Tooltip content="Player has existing games">

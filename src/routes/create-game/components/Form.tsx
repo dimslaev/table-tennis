@@ -39,13 +39,13 @@ export function Form({
   >({});
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type } = e.target;
+    const { name, value, dataset } = e.target;
     setFormValues((prevValues) => ({
       ...prevValues,
       [name]:
-        type === "number" && value
+        dataset.type === "number" && value
           ? parseInt(value)
-          : type === "number"
+          : dataset.type === "number"
           ? ""
           : value,
     }));
@@ -134,7 +134,7 @@ export function Form({
           <FieldWrapper label="Score" error={errors["score_player_1"]}>
             <TextField.Root
               name="score_player_1"
-              type="number"
+              data-type="number"
               value={formValues.score_player_1}
               onChange={handleChange}
             />

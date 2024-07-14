@@ -31,7 +31,7 @@ export function CreateGame() {
       <List
         games={games.data || []}
         onDeleteGame={deleteGame.mutate}
-        isLoading={deleteGameIsPending}
+        isLoading={deleteGameIsPending || createGameIsPending}
       />
     </Flex>
   );

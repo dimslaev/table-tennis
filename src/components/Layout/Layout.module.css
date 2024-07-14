@@ -37,11 +37,9 @@
 
 .nav-link:hover {
   background-color: var(--accent-3);
-  color: var(--accent-contrast);
 }
 
 .nav-link:active,
 .nav-link.active {
-  background-color: var(--accent-7);
-  color: var(--accent-contrast);
+  background-color: var(--accent-5);
 }
