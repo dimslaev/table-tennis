@@ -18,8 +18,8 @@ export const getAll = async (): Promise<Game[]> => {
 export const getExtended = async (): Promise<ExtendedGame[]> => {
   const { data, error } = await client.from("game").select(`
       id,
-      datetime,
-      id,
+      start_time,
+      end_time,
       player_1 (id, first_name, last_name, avatar_url),
       player_2 (id, first_name, last_name, avatar_url),
       score_player_1,

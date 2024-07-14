@@ -11,28 +11,31 @@ export type Database = {
     Tables: {
       game: {
         Row: {
-          datetime: string;
+          end_time: string;
           id: string;
           player_1: string;
           player_2: string;
           score_player_1: number;
           score_player_2: number;
+          start_time: string;
         };
         Insert: {
-          datetime?: string;
+          end_time?: string;
           id?: string;
           player_1: string;
           player_2: string;
           score_player_1: number;
           score_player_2: number;
+          start_time?: string;
         };
         Update: {
-          datetime?: string;
+          end_time?: string;
           id?: string;
           player_1?: string;
           player_2?: string;
           score_player_1?: number;
           score_player_2?: number;
+          start_time?: string;
         };
         Relationships: [
           {

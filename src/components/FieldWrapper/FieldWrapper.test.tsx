@@ -16,13 +16,7 @@ const Default = ({
 
 describe("FieldWrapper", () => {
   test("renders elements", async () => {
-    render(
-      <Default
-        required
-        tooltip="Tooltip"
-        error={{ message: "Error text", type: "value" }}
-      />
-    );
+    render(<Default required tooltip="Tooltip" error="Error text" />);
     expect(screen.getByText("Label")).not.toBeNull();
     expect(screen.getByText("*")).not.toBeNull();
     expect(screen.getByText("Error text")).not.toBeNull();

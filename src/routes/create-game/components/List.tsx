@@ -28,12 +28,13 @@ export function List({
         {games
           ?.sort((a, b) => {
             return (
-              new Date(b.datetime).getTime() - new Date(a.datetime).getTime()
+              new Date(b.start_time).getTime() -
+              new Date(a.start_time).getTime()
             );
           })
           .map((game) => (
             <Table.Row key={game.id} align="center">
-              <Table.Cell>{formatDate(game.datetime)}</Table.Cell>
+              <Table.Cell>{formatDate(game.start_time)}</Table.Cell>
               <Table.Cell>
                 {game.player_1.first_name} {game.player_1.last_name}
               </Table.Cell>
@@ -43,7 +44,7 @@ export function List({
               <Table.Cell>
                 {game.score_player_1} : {game.score_player_2}
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell align="right">
                 <IconButton
                   variant="soft"
                   onClick={() => onDeleteGame(game.id)}
