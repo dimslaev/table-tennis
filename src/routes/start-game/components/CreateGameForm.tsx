@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-import { Flex, Grid, TextField, Select, Button } from "@radix-ui/themes";
-import { useGetPlayers } from "@/api/player/hooks";
+import { Flex, Grid, Select, Button } from "@radix-ui/themes";
 import { FieldWrapper } from "@/components/FieldWrapper/FieldWrapper";
+import { Player } from "@/api/player/types";
 import { GameCreate } from "@/api/game/types";
 import * as z from "zod";
 
@@ -23,15 +23,15 @@ const schema = z.object({
   score_player_2: z.number().min(0, "Please add score"),
 });
 
-export function Form({
+export function CreateGameForm({
   onSubmit,
+  players,
   isLoading,
 }: {
   onSubmit: (values: GameCreate) => void;
+  players: Player[];
   isLoading: boolean;
 }) {
-  const players = useGetPlayers();
-
   const [formValues, setFormValues] = useState<GameCreate>(defaultValues);
 
   const [errors, setErrors] = useState<
@@ -39,13 +39,13 @@ export function Form({
   >({});
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, dataset } = e.target;
+    const { name, value, type } = e.target;
     setFormValues((prevValues) => ({
       ...prevValues,
       [name]:
-        dataset?.type === "number" && value
+        type === "number" && value
           ? parseInt(value)
-          : dataset?.type === "number"
+          : type === "number"
           ? ""
           : value,
     }));
@@ -53,13 +53,7 @@ export function Form({
 
   const validateForm = (): boolean => {
     try {
-      schema.parse(formValues, {
-        errorMap: (issue, ctx) => {
-          if (issue.code === "invalid_type" && issue.expected === "number")
-            return { message: "Please add score" };
-          return { message: ctx.defaultError };
-        },
-      });
+      schema.parse(formValues);
       setErrors({});
       return true;
     } catch (e) {
@@ -88,26 +82,6 @@ export function Form({
     <form onSubmit={handleSubmit}>
       <Flex direction="column" gap="2">
         <Grid gap="4" columns="2">
-          <FieldWrapper label="Start timme" error={errors["start_time"]}>
-            <TextField.Root
-              name="datetime"
-              type="datetime-local"
-              value={formValues.start_time.slice(0, 16)}
-              onChange={handleChange}
-            />
-          </FieldWrapper>
-
-          <FieldWrapper label="End time" error={errors["end_time"]}>
-            <TextField.Root
-              name="datetime"
-              type="datetime-local"
-              value={formValues.end_time.slice(0, 16)}
-              onChange={handleChange}
-            />
-          </FieldWrapper>
-        </Grid>
-
-        <Grid gap="4" columns="2">
           <FieldWrapper label="Player 1" error={errors["player_1"]}>
             <Select.Root
               name="player_1"
@@ -120,7 +94,7 @@ export function Form({
             >
               <Select.Trigger />
               <Select.Content>
-                {players.data
+                {players
                   ?.filter((player) => player.id !== formValues.player_2)
                   .map(({ id, first_name, last_name }) => (
                     <Select.Item value={id} key={id}>
@@ -131,17 +105,6 @@ export function Form({
             </Select.Root>
           </FieldWrapper>
 
-          <FieldWrapper label="Score" error={errors["score_player_1"]}>
-            <TextField.Root
-              name="score_player_1"
-              data-type="number"
-              value={formValues.score_player_1}
-              onChange={handleChange}
-            />
-          </FieldWrapper>
-        </Grid>
-
-        <Grid gap="4" columns="2">
           <FieldWrapper label="Player 2" error={errors["player_2"]}>
             <Select.Root
               name="player_2"
@@ -154,7 +117,7 @@ export function Form({
             >
               <Select.Trigger />
               <Select.Content>
-                {players.data
+                {players
                   ?.filter((player) => player.id !== formValues.player_1)
                   .map(({ id, first_name, last_name }) => (
                     <Select.Item value={id} key={id}>
@@ -164,20 +127,11 @@ export function Form({
               </Select.Content>
             </Select.Root>
           </FieldWrapper>
-
-          <FieldWrapper label="Score" error={errors["score_player_2"]}>
-            <TextField.Root
-              name="score_player_2"
-              data-type="number"
-              value={formValues.score_player_2}
-              onChange={handleChange}
-            />
-          </FieldWrapper>
         </Grid>
       </Flex>
 
       <Button type="submit" mt="4" loading={isLoading} style={{ width: 120 }}>
-        Create game
+        Start
       </Button>
     </form>
   );

@@ -7,7 +7,7 @@ export const useGetStatistics = (
   options?: Omit<UseQueryOptions<Statistics[]>, "queryKey" | "queryFn">
 ) => {
   return useQuery<Statistics[]>({
-    queryKey: [QUERY_KEYS.PLAYERS],
+    queryKey: [QUERY_KEYS.STATISTICS],
     queryFn: statisticsService.getAll,
     ...options,
   });
