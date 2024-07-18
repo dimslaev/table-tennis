@@ -1,0 +1,14 @@
+.select {
+  position: relative;
+}
+
+.select select {
+  width: 100%;
+}
+
+.select-icon {
+  position: absolute;
+  right: var(--space-2);
+  top: 50%;
+  transform: translateY(-50%);
+}

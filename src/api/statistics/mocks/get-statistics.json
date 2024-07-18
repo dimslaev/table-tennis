@@ -1,0 +1,32 @@
+[
+  {
+    "id": "fcd2200b-da3b-4ced-9b04-82bee0231da4",
+    "first_name": "John",
+    "last_name": "Doe",
+    "games_played": 3,
+    "games_won": 2,
+    "games_lost": 0,
+    "score": 5,
+    "ranking": 1
+  },
+  {
+    "id": "cb8e8b9f-7ea5-4097-bd5c-c7721946bb38",
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "games_played": 3,
+    "games_won": 1,
+    "games_lost": 2,
+    "score": 5,
+    "ranking": 2
+  },
+  {
+    "id": "3e876e62-3af2-4e25-bd31-86a2b45e2178",
+    "first_name": "Alice",
+    "last_name": "Johnson",
+    "games_played": 2,
+    "games_won": 0,
+    "games_lost": 1,
+    "score": 3,
+    "ranking": 2
+  }
+]

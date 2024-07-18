@@ -1,0 +1,48 @@
+{
+  "name": "table-tennis",
+  "description": "Coding challenge: create a fullstack app with React and Supabase.",
+  "version": "1.0.0",
+  "author": "Dimitar Slaev <dimslaev@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "clean": "rimraf dist",
+    "lint": "eslint .",
+    "lint:fix": "yarn lint --fix",
+    "lint:types": "tsc --noEmit",
+    "format": "prettier --write .",
+    "test": "vitest",
+    "storybook": "node storybook"
+  },
+  "dependencies": {
+    "@radix-ui/react-icons": "^1.3.0",
+    "@radix-ui/themes": "^3.0.1",
+    "@supabase/supabase-js": "^2.41.1",
+    "@tanstack/react-query": "^5.28.9",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^14.2.2",
+    "@types/react": "^18.2.73",
+    "@types/react-dom": "^18.2.23",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "@vitejs/plugin-react": "latest",
+    "@vitest/coverage-v8": "^1.4.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-storybook": "^0.8.0",
+    "eslint-plugin-testing-library": "^6.2.0",
+    "jsdom": "^24.0.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.4.3",
+    "vite": "^5.2.7",
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^1.4.0"
+  }
+}
