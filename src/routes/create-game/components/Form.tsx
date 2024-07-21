@@ -4,7 +4,7 @@ import { FieldWrapper } from "@/components/FieldWrapper/FieldWrapper";
 import { Select } from "@/components/Select/Select";
 import { GameCreate } from "@/api/game/types";
 import { Player } from "@/api/player/types";
-import { getPlayerOptions } from "@/utils/utils";
+import { getPlayerOptions, getDatetimeInputValue } from "@/utils/utils";
 import * as z from "zod";
 
 const defaultValues: GameCreate = {
@@ -41,6 +41,17 @@ const schema = z
     {
       path: ["scores"],
       message: "Check score",
+    }
+  )
+  .refine(
+    (data) => {
+      const startTime = new Date(data.start_time);
+      const endTime = new Date(data.end_time);
+      return endTime > startTime;
+    },
+    {
+      message: "End time must be after start time",
+      path: ["end_time"],
     }
   );
 
@@ -116,7 +127,8 @@ export function Form({
         <Grid gap="4" columns={{ initial: "1", xs: "2" }}>
           <FieldWrapper label="Start time" error={errors.start_time}>
             <TextField.Root
-              value={values.start_time}
+              name="start_time"
+              value={getDatetimeInputValue(values.start_time)}
               onChange={handleChange}
               type="datetime-local"
             />
@@ -124,7 +136,8 @@ export function Form({
 
           <FieldWrapper label="End time" error={errors.end_time}>
             <TextField.Root
-              value={values.end_time}
+              name="end_time"
+              value={getDatetimeInputValue(values.end_time)}
               onChange={handleChange}
               type="datetime-local"
             />
@@ -135,6 +148,7 @@ export function Form({
           <FieldWrapper label="Player 1" error={errors.player_1}>
             <Select
               name="player_1"
+              value={values.player_1}
               options={getPlayerOptions("player_1", players, values)}
               onChange={handleChange}
             />
@@ -157,6 +171,7 @@ export function Form({
           <FieldWrapper label="Player 2" error={errors.player_2}>
             <Select
               name="player_2"
+              value={values.player_2}
               options={getPlayerOptions("player_2", players, values)}
               onChange={handleChange}
             />

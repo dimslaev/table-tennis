@@ -18,7 +18,6 @@ export function Select({
   return (
     <div className={style["select"]}>
       <select
-        defaultValue=""
         className={`rt-reset rt-reset rt-SelectTrigger rt-r-size-2 rt-variant-surface ${className || ""}`}
         {...rest}
       >
