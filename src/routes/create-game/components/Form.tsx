@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FocusEvent, FormEvent } from "react";
 import { Flex, Grid, TextField, Text, Button } from "@radix-ui/themes";
 import { FieldWrapper } from "@/components/FieldWrapper/FieldWrapper";
 import { Select } from "@/components/Select/Select";
@@ -91,6 +91,13 @@ export function Form({
     }));
   };
 
+  const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
+    const { dataset } = e.target;
+    if (dataset?.type === "number") {
+      e.target.select();
+    }
+  };
+
   const validateForm = (): boolean => {
     try {
       schema.parse(values, { errorMap });
@@ -162,6 +169,7 @@ export function Form({
               name="score_player_1"
               value={values.score_player_1}
               onChange={handleChange}
+              onFocus={handleFocus}
               data-type="number"
             />
           </FieldWrapper>
@@ -185,6 +193,7 @@ export function Form({
               name="score_player_2"
               value={values.score_player_2}
               onChange={handleChange}
+              onFocus={handleFocus}
               data-type="number"
             />
           </FieldWrapper>

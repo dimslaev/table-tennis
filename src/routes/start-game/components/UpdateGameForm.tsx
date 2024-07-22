@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, useEffect } from "react";
 import { Flex, Box, Grid, Callout, Button } from "@radix-ui/themes";
 import { Player } from "@/api/player/types";
 import { Game, GameUpdate } from "@/api/game/types";
@@ -40,11 +40,11 @@ export function UpdateGameForm({
       : player2
     : undefined;
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    onSubmit(formValues, winner);
-  };
+  useEffect(() => {
+    if (hasWinner) {
+      onSubmit(formValues, winner);
+    }
+  }, [hasWinner]);
 
   if (!player1 || !player2 || !player1Stats || !player2Stats) {
     return (
@@ -59,7 +59,7 @@ export function UpdateGameForm({
 
   return (
     <Flex direction="column" gap="4">
-      <form onSubmit={handleSubmit}>
+      <form>
         <Flex direction="column" gap="2">
           <Grid gap="4" columns={{ initial: "1", xs: "2" }}>
             <PlayerCard

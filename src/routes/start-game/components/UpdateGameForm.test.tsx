@@ -24,7 +24,7 @@ test("Update game form", () => {
     <ThemeProvider>
       <UpdateGameForm
         onSubmit={onSubmit}
-        game={game}
+        game={{ ...game, score_player_1: 0, score_player_2: 0 }}
         resetGame={onReset}
         players={players}
         statistics={makeStatistics(statistics, players)}
@@ -52,7 +52,7 @@ test("Update game form", () => {
 
   expect(onSubmit).not.toHaveBeenCalled();
 
-  // clickTimes(player1Btn!, 1)
+  clickTimes(player1Btn!, 1);
 
-  // expect(onSubmit).toHaveBeenCalled();
+  expect(onSubmit).toHaveBeenCalled();
 });

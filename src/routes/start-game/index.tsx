@@ -2,7 +2,6 @@ import { Heading, Flex } from "@radix-ui/themes";
 import { useGetPlayers } from "@/api/player/hooks";
 import { useCreateGame, useUpdateGame } from "@/api/game/hooks";
 import { useGetStatistics } from "@/api/statistics/hooks";
-// import { useMinimumFetchTimeElapsed } from "@/utils/hooks";
 import { CreateGameForm } from "./components/CreateGameForm";
 import { UpdateGameForm } from "./components/UpdateGameForm";
 import { useState } from "react";
@@ -26,7 +25,7 @@ export function StartGame() {
     });
 
     if (winner) {
-      alert(`Winner ${winner.first_name} ${winner.last_name}`);
+      console.log(`Winner ${winner.first_name} ${winner.last_name}`);
     }
   };
 
