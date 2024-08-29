@@ -1,10 +1,16 @@
 import { useState, ChangeEvent, FocusEvent, FormEvent } from "react";
-import { Flex, Grid, TextField, Text, Button } from "@radix-ui/themes";
+import { Flex, Grid, TextField, Button } from "@radix-ui/themes";
 import { FieldWrapper } from "@/components/FieldWrapper/FieldWrapper";
+import { Notification } from "@/components/Notification/Notification";
 import { Select } from "@/components/Select/Select";
 import { GameCreate } from "@/api/game/types";
 import { Player } from "@/api/player/types";
-import { getPlayerOptions, getDatetimeInputValue } from "@/utils/utils";
+import {
+  getPlayerOptions,
+  getDatetimeInputValue,
+  validateScore,
+  validateStartEndTimes,
+} from "@/utils/utils";
 import * as z from "zod";
 
 const defaultValues: GameCreate = {
@@ -26,40 +32,19 @@ const schema = z
     score_player_2: z.number().min(0, "Please add score"),
   })
   .refine(
-    (data) => {
-      const { score_player_1, score_player_2 } = data;
-
-      if (
-        Math.abs(score_player_1 - score_player_2) >= 2 &&
-        (score_player_1 >= 11 || score_player_2 >= 11)
-      ) {
-        return true;
-      }
-
-      return false;
-    },
-    {
-      path: ["scores"],
-      message: "Check score",
-    }
+    ({ score_player_1, score_player_2 }) =>
+      validateScore(score_player_1, score_player_2),
+    { path: ["scores"], message: "Check score" }
   )
   .refine(
     (data) => {
-      const startTime = new Date(data.start_time);
-      const endTime = new Date(data.end_time);
-      return endTime > startTime;
+      return validateStartEndTimes(data.start_time, data.end_time);
     },
     {
-      message: "End time must be after start time",
-      path: ["end_time"],
+      message: "Check times",
+      path: ["times"],
     }
   );
-
-const errorMap: z.ZodErrorMap = (issue, ctx) => {
-  if (issue.code === "invalid_type" && issue.expected === "number")
-    return { message: "Please add score" };
-  return { message: ctx.defaultError };
-};
 
 export function Form({
   players,
@@ -73,34 +58,28 @@ export function Form({
   const [values, setValues] = useState<GameCreate>(defaultValues);
 
   const [errors, setErrors] = useState<
-    Partial<Record<keyof GameCreate | "scores", string>>
+    Partial<Record<keyof GameCreate | "scores" | "times", string>>
   >({});
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, value, dataset } = e.target;
+    const { name, value, type } = e.target;
     setValues((prevValues) => ({
       ...prevValues,
-      [name]:
-        dataset?.type === "number" && value
-          ? parseInt(value)
-          : dataset?.type === "number"
-            ? ""
-            : value,
+      [name]: type === "number" ? parseInt(value) : value,
     }));
   };
 
   const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
-    const { dataset } = e.target;
-    if (dataset?.type === "number") {
+    if (e.target.type === "number") {
       e.target.select();
     }
   };
 
   const validateForm = (): boolean => {
     try {
-      schema.parse(values, { errorMap });
+      schema.parse(values);
       setErrors({});
       return true;
     } catch (e) {
@@ -131,26 +110,6 @@ export function Form({
   return (
     <form onSubmit={handleSubmit}>
       <Flex direction="column" gap="2">
-        <Grid gap="4" columns={{ initial: "1", xs: "2" }}>
-          <FieldWrapper label="Start time" error={errors.start_time}>
-            <TextField.Root
-              name="start_time"
-              value={getDatetimeInputValue(values.start_time)}
-              onChange={handleChange}
-              type="datetime-local"
-            />
-          </FieldWrapper>
-
-          <FieldWrapper label="End time" error={errors.end_time}>
-            <TextField.Root
-              name="end_time"
-              value={getDatetimeInputValue(values.end_time)}
-              onChange={handleChange}
-              type="datetime-local"
-            />
-          </FieldWrapper>
-        </Grid>
-
         <Grid gap="4" columns="2">
           <FieldWrapper label="Player 1" error={errors.player_1}>
             <Select
@@ -161,27 +120,27 @@ export function Form({
             />
           </FieldWrapper>
 
-          <FieldWrapper
-            label="Score"
-            error={errors.score_player_1 || errors["scores"]}
-          >
-            <TextField.Root
-              name="score_player_1"
-              value={values.score_player_1}
-              onChange={handleChange}
-              onFocus={handleFocus}
-              data-type="number"
-            />
-          </FieldWrapper>
-        </Grid>
-
-        <Grid gap="4" columns="2">
           <FieldWrapper label="Player 2" error={errors.player_2}>
             <Select
               name="player_2"
               value={values.player_2}
               options={getPlayerOptions("player_2", players, values)}
               onChange={handleChange}
+            />
+          </FieldWrapper>
+        </Grid>
+
+        <Grid gap="4" columns="2">
+          <FieldWrapper
+            label="Score"
+            error={errors.score_player_1 || errors["scores"]}
+          >
+            <TextField.Root
+              name="score_player_1"
+              type="number"
+              value={values.score_player_1}
+              onChange={handleChange}
+              onFocus={handleFocus}
             />
           </FieldWrapper>
 
@@ -191,21 +150,53 @@ export function Form({
           >
             <TextField.Root
               name="score_player_2"
+              type="number"
               value={values.score_player_2}
               onChange={handleChange}
               onFocus={handleFocus}
-              data-type="number"
             />
           </FieldWrapper>
         </Grid>
-      </Flex>
 
-      {errors["scores"] && (
-        <Text as="p" color="red" size="1" mt="2">
-          A game is played until one of the players scores 11 points, or if
-          there is a 2 point difference after the score was tied 10:10.
-        </Text>
-      )}
+        {errors["scores"] && (
+          <Notification color="red">
+            A game is played until one of the players scores 11 points, or if
+            there is a 2 point difference after the score was tied 10:10.
+          </Notification>
+        )}
+
+        <Grid gap="4" columns={{ initial: "1", xs: "2" }}>
+          <FieldWrapper
+            label="Start time"
+            error={errors.start_time || errors.times}
+          >
+            <TextField.Root
+              name="start_time"
+              value={getDatetimeInputValue(values.start_time)}
+              onChange={handleChange}
+              type="datetime-local"
+            />
+          </FieldWrapper>
+
+          <FieldWrapper
+            label="End time"
+            error={errors.end_time || errors.times}
+          >
+            <TextField.Root
+              name="end_time"
+              value={getDatetimeInputValue(values.end_time)}
+              onChange={handleChange}
+              type="datetime-local"
+            />
+          </FieldWrapper>
+        </Grid>
+
+        {errors["times"] && (
+          <Notification color="red">
+            End time must be after start time, within the same day.
+          </Notification>
+        )}
+      </Flex>
 
       <Button type="submit" mt="4" loading={isLoading} style={{ width: 120 }}>
         Create game

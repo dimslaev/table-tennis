@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Flex, Box, Grid, Callout, Button } from "@radix-ui/themes";
+import { Flex, Box, Grid, Button } from "@radix-ui/themes";
 import { Player } from "@/api/player/types";
 import { Game, GameUpdate } from "@/api/game/types";
 import { Statistics } from "@/api/statistics/types";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { PlayerCard } from "./PlayerCard";
+import { Notification } from "@/components/Notification/Notification";
+import { validateScore } from "@/utils/utils";
 
 export function UpdateGameForm({
   onSubmit,
@@ -31,9 +32,8 @@ export function UpdateGameForm({
 
   const player1Score = formValues.score_player_1;
   const player2Score = formValues.score_player_2;
-  const hasWinner =
-    (player1Score >= 11 || player2Score >= 11) &&
-    Math.abs(formValues.score_player_1 - formValues.score_player_2) > 1;
+  const hasWinner = validateScore(player1Score, player2Score);
+
   const winner = hasWinner
     ? player1Score > player2Score
       ? player1
@@ -48,12 +48,9 @@ export function UpdateGameForm({
 
   if (!player1 || !player2 || !player1Stats || !player2Stats) {
     return (
-      <Callout.Root>
-        <Callout.Icon>
-          <InfoCircledIcon />
-        </Callout.Icon>
-        <Callout.Text>There was an error. We are investigating...</Callout.Text>
-      </Callout.Root>
+      <Notification color="red">
+        There was an error. We are investigating...
+      </Notification>
     );
   }
 
@@ -95,15 +92,10 @@ export function UpdateGameForm({
         </Flex>
       </form>
 
-      <Callout.Root>
-        <Callout.Icon>
-          <InfoCircledIcon />
-        </Callout.Icon>
-        <Callout.Text>
-          A game is played until one of the players scores 11 points or if there
-          is a 2 point difference after the score was tied (10:10).
-        </Callout.Text>
-      </Callout.Root>
+      <Notification color="blue">
+        A game is played until one of the players scores 11 points or if there
+        is a 2 point difference after the score was tied (10:10).
+      </Notification>
 
       {hasWinner && (
         <Box>
