@@ -1,5 +1,6 @@
 import { Table } from "@radix-ui/themes";
 import { Statistics } from "@/api/statistics/types";
+import { sortByRanking } from "@/utils/utils";
 
 export function List({ statistics }: { statistics: Statistics[] }) {
   return (
@@ -16,25 +17,21 @@ export function List({ statistics }: { statistics: Statistics[] }) {
       </Table.Header>
 
       <Table.Body>
-        {statistics.map((player) => {
+        {statistics.sort(sortByRanking).map((player, index) => {
           return (
             <Table.Row
               key={player.id}
               align="center"
-              style={
-                player.ranking === 1
-                  ? { backgroundColor: "var(--accent-3)" }
-                  : {}
-              }
+              style={index === 0 ? { backgroundColor: "var(--accent-3)" } : {}}
             >
-              <Table.Cell>{player.ranking}</Table.Cell>
+              <Table.Cell>{index + 1}</Table.Cell>
               <Table.Cell>
                 {player.first_name} {player.last_name}
               </Table.Cell>
               <Table.Cell>{player.games_played}</Table.Cell>
               <Table.Cell>{player.games_won}</Table.Cell>
               <Table.Cell>{player.games_lost}</Table.Cell>
-              <Table.Cell>{player.score}</Table.Cell>
+              <Table.Cell>{player.total_score}</Table.Cell>
             </Table.Row>
           );
         })}

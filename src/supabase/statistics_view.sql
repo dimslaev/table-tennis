@@ -33,11 +33,8 @@ SELECT
     COALESCE(ps.games_played, 0) AS games_played,
     COALESCE(ps.games_won, 0) AS games_won,
     COALESCE(ps.games_lost, 0) AS games_lost,
-    COALESCE(ps.total_score, 0) AS score,
-    RANK() OVER (ORDER BY COALESCE(NULLIF(ps.games_won, 0) / NULLIF(ps.games_lost, 0), ps.games_won) DESC) AS ranking
+    COALESCE(ps.total_score, 0) AS total_score
 FROM
     player p
 LEFT JOIN
-    player_stats ps ON p.id = ps.player_id
-ORDER BY
-    ranking;
+    player_stats ps ON p.id = ps.player_id;

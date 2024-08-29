@@ -99,8 +99,7 @@ export type Database = {
           games_won: number | null;
           id: string | null;
           last_name: string | null;
-          ranking: number | null;
-          score: number | null;
+          total_score: number | null;
         };
         Relationships: [];
       };
